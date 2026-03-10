@@ -1,203 +1,303 @@
 # AI Interview Evaluation & Scoring Engine
 
-An advanced backend evaluation system built using FastAPI and OpenAI API to assess technical interview responses using structured scoring, anti-cheating detection, confidence calibration, plagiarism analysis, and multi-turn context tracking.
+### GPT Integration Optimization Module
 
-This project was implemented as part of an internship task focused on building a scalable and modular LLM-based evaluation system.
+This repository contains the backend evaluation engine used in a **Domain-Based Intelligent Voice AI Interviewer** system.
 
----
+The engine evaluates candidate responses during automated interviews using **LLM-based analysis, structured scoring, and reliability mechanisms**.
 
-## 📌 Objective
-
-To design and implement a comprehensive interview evaluation engine capable of:
-
-- Weighted scoring rubric
-- Anti-cheating detection
-- Confidence-based score adjustment
-- Plagiarism risk analysis
-- Multi-turn interview context handling
-- Risk engine output for integration
+This implementation was developed as part of an internship task focused specifically on **optimizing GPT integration reliability and evaluation handling**.
 
 ---
 
-## 🏗 System Architecture Overview
+# Project Objective
 
-The system follows a layered architecture:
+The goal of this module is to ensure that LLM-based interview evaluation remains:
+
+* Reliable
+* Structured
+* Fault tolerant
+* Easily integrable with other system components
+
+This engine evaluates candidate answers and produces **structured evaluation results** that can be consumed by other modules such as:
+
+* Interview controller
+* Risk monitoring system
+* Candidate scoring pipeline
+* Interview summary generator
+
+---
+
+# Internship Task Scope
+
+Assigned Module: **GPT Integration Optimization**
+
+Primary responsibilities:
+
+* Improve GPT API handling
+* Ensure structured output reliability
+* Implement retry logic
+* Reduce system failure risk
+* Handle API errors safely
+
+The implementation focuses on **making LLM evaluation robust and production-ready**.
+
+---
+
+# System Architecture
 
 ```
-Client → FastAPI (main.py)
-        → Schema Validation (schemas.py)
-        → Evaluation Layer (llm_evaluator.py)
-            → Retry + Fallback Logic
-            → JSON Enforcement
-            → Anti-Cheat Detection
-            → Confidence Adjustment
-            → Plagiarism Detection
-            → Context Tracking
-        → Risk Engine Output
-```
-
----
-
-## ⚙️ Core Features
-
-### 1️⃣ Weighted Scoring System
-- Technical Accuracy (40%)
-- Concept Clarity (25%)
-- Keyword Coverage (20%)
-- Communication (15%)
-
-All scores are validated and normalized.
-
----
-
-### 2️⃣ Retry + Fallback Mechanism
-- Configurable retry attempts
-- Exponential backoff
-- Automatic fallback to mock mode if API quota fails
-- Robust error handling
-
----
-
-### 3️⃣ Anti-Cheating Detection
-Heuristic detection of:
-- Copy-paste indicators
-- AI-generated phrasing
-- Robotic responses
-- Short / unnatural answers
-
-Produces a confidence probability score.
-
----
-
-### 4️⃣ Confidence Adjustment Engine
-Uses:
-- Whisper confidence
-- Audio quality score
-- Speech consistency
-- Background noise level
-
-Adjusts evaluation scores accordingly while preserving communication score integrity.
-
----
-
-### 5️⃣ Plagiarism Detection Layer
-- Semantic similarity checks
-- Ideal answer comparison
-- Risk categorization (Low / Medium / High / Critical)
-
----
-
-### 6️⃣ Multi-Turn Context Tracking
-- Maintains interview session state
-- Tracks performance consistency
-- Analyzes trend patterns
-- Generates context influence insights
-
----
-
-### 7️⃣ Risk Engine Output
-Transforms evaluation result into:
-
-- Cheat probability
-- Risk flag
-- Confidence level
-- Quality metrics
-
-Designed for integration with monitoring or ATS systems.
-
----
-
-## 📂 Project Structure
-
-```
-gpt-llm-module-main/
-│
-├── app/
-│   ├── main.py
-│   ├── config.py
-│   ├── schemas.py
-│   ├── prompts/
-│   └── services/
-│
-├── requirements.txt
-├── .env.example
-├── README.md
-└── SYSTEM_ARCHITECTURE.md
+Client Request
+      │
+      ▼
+FastAPI Backend (main.py)
+      │
+      ▼
+Schema Validation (schemas.py)
+      │
+      ▼
+LLM Evaluation Engine (llm_evaluator.py)
+      │
+      ├── Retry Logic
+      ├── GPT API Integration
+      ├── JSON Enforcement
+      ├── Anti-Cheating Detection
+      ├── Confidence Adjustment
+      ├── Plagiarism Analysis
+      └── Context Tracking
+      │
+      ▼
+Structured Evaluation Output
 ```
 
 ---
 
-## 🔧 Installation & Setup
+# Core Components
 
-1. Clone repository:
+## 1. GPT Integration Layer
+
+The **LLMEvaluator** class is responsible for interacting with the GPT API and generating evaluation results.
+
+Responsibilities include:
+
+* prompt preparation
+* API request handling
+* response parsing
+* evaluation output generation
+
+This layer acts as the **central intelligence engine** of the system.
+
+---
+
+## 2. Retry + Fallback Mechanism
+
+LLM APIs may fail due to:
+
+* rate limits
+* network errors
+* service interruptions
+
+To ensure reliability the system implements:
+
+* multiple retry attempts
+* exponential backoff strategy
+* automatic fallback evaluation
+
+If the API fails repeatedly, the system safely switches to a **mock evaluation mode**, preventing system crashes.
+
+---
+
+## 3. Structured JSON Enforcement
+
+LLMs can sometimes produce malformed responses.
+
+To prevent downstream failures the system includes a **JSON validation layer** that:
+
+* validates GPT responses
+* repairs malformed JSON
+* guarantees schema compliance
+
+This ensures every response matches the required evaluation format.
+
+---
+
+## 4. Weighted Evaluation System
+
+Candidate answers are evaluated using a weighted rubric:
+
+| Metric             | Weight |
+| ------------------ | ------ |
+| Technical Accuracy | 40%    |
+| Concept Clarity    | 25%    |
+| Keyword Coverage   | 20%    |
+| Communication      | 15%    |
+
+The final score is calculated after validation and normalization.
+
+---
+
+## 5. Anti-Cheating Detection
+
+The engine includes heuristics to identify suspicious responses such as:
+
+* copy-paste indicators
+* AI-generated phrasing
+* robotic response patterns
+* unusually short answers
+
+The result includes a **risk confidence score**.
+
+---
+
+## 6. Confidence-Based Score Adjustment
+
+Evaluation scores can be adjusted based on speech analysis signals such as:
+
+* speech recognition confidence
+* audio quality
+* speech consistency
+* background noise levels
+
+This ensures fair scoring when audio quality affects transcription.
+
+---
+
+## 7. Multi-Turn Context Tracking
+
+The system supports interview sessions with multiple questions.
+
+It tracks:
+
+* question history
+* score progression
+* keyword coverage trends
+* consistency patterns
+
+This enables **context-aware evaluation**.
+
+---
+
+# Example Evaluation Flow
 
 ```
-git clone https://github.com/YellankiKaushik/<repo-name>.git
-cd <repo-name>
+Candidate Answer
+      │
+      ▼
+FastAPI Endpoint
+      │
+      ▼
+LLM Evaluation Engine
+      │
+      ▼
+GPT API Call
+      │
+      ▼
+Retry Logic + Error Handling
+      │
+      ▼
+JSON Validation
+      │
+      ▼
+Business Logic Validation
+      │
+      ▼
+Final Structured Evaluation
 ```
 
-2. Create virtual environment:
+---
 
-```
-python -m venv venv
-venv\Scripts\activate
-```
+# API Endpoints
 
-3. Install dependencies:
+| Endpoint                  | Description                        |
+| ------------------------- | ---------------------------------- |
+| `/evaluate/comprehensive` | Full evaluation pipeline           |
+| `/evaluate/risk-engine`   | Output formatted for risk analysis |
+| `/evaluate`               | Legacy compatibility endpoint      |
+| `/evaluate/weights`       | Returns scoring weights            |
+| `/evaluate/config`        | Returns system configuration       |
 
-```
-pip install -r requirements.txt
-```
+Swagger documentation:
 
-4. Create `.env` file based on `.env.example`:
-
-```
-OPENAI_API_KEY=your_api_key
-USE_MOCK_MODE=false
-```
-
-5. Run server:
-
-```
-uvicorn app.main:app --reload
-```
-
-Access API Docs:
 ```
 http://127.0.0.1:8000/docs
 ```
 
 ---
 
-## 🧠 Design Decisions
+# Installation
 
-- Modular service-based architecture for scalability
-- Separation of prompt from business logic
-- Config-driven retry + fallback handling
-- Deterministic scoring using low temperature
-- Risk engine abstraction for external integration
-- Enhanced JSON enforcement to guarantee structure stability
+Clone repository:
+
+```
+git clone https://github.com/YellankiKaushik/GPT-Integration-Optimization.git
+cd GPT-Integration-Optimization
+```
+
+Create virtual environment:
+
+```
+python -m venv venv
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+Create environment configuration:
+
+```
+OPENAI_API_KEY=your_api_key
+USE_MOCK_MODE=false
+```
+
+Run server:
+
+```
+uvicorn app.main:app --reload
+```
+
+Open API documentation:
+
+```
+http://127.0.0.1:8000/docs
+```
 
 ---
 
-## 🔄 Alternative Approaches Considered
+# Key Design Principles
 
-- Single monolithic evaluator file (rejected for modular clarity)
-- Pure rule-based scoring (rejected due to flexibility limitations)
-- No fallback mode (rejected for robustness concerns)
-- Static scoring without confidence adjustment (rejected for fairness)
+* Modular architecture
+* Reliable LLM integration
+* Fault-tolerant API communication
+* Structured output validation
+* Clear separation of concerns
+
+These principles ensure the system can scale and integrate with larger interview platforms.
 
 ---
 
-## 📜 Conclusion
+# Future Improvements
 
-This system demonstrates:
+Possible improvements include:
 
-- Backend architecture design
-- LLM integration patterns
-- Error handling & resilience
-- Security awareness (env handling)
-- Modular engineering principles
-- Evaluation logic reasoning
+* caching repeated evaluations
+* streaming GPT responses
+* domain-specific evaluation prompts
+* improved semantic plagiarism detection
+* distributed evaluation services
 
-Designed for clarity, explainability, and extensibility.
+---
+
+# Summary
+
+This module demonstrates:
+
+* reliable GPT API integration
+* backend architecture design
+* structured LLM evaluation pipelines
+* fault-tolerant system design
+
+The implementation focuses on **making LLM-based evaluation stable, predictable, and production-ready**.
