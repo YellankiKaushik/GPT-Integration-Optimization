@@ -33,12 +33,12 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 # Initialize OpenAI client
-client = None
-if OPENAI_API_KEY and not USE_MOCK_MODE:
-    try:
-        client = OpenAI(api_key=OPENAI_API_KEY)
-    except Exception as e:
-        logger.error(f"Failed to initialize OpenAI client: {e}")
+#client = None
+#if OPENAI_API_KEY and not USE_MOCK_MODE:
+ #   try:
+  #      client = OpenAI(api_key=OPENAI_API_KEY)
+   # except Exception as e:
+    #    logger.error(f"Failed to initialize OpenAI client: {e}")
 
 # Load evaluation prompt template
 PROMPT_FILE = Path(__file__).parent.parent / "prompts" / "evaluation_prompt.txt"
@@ -48,10 +48,22 @@ with open(PROMPT_FILE, "r", encoding="utf-8") as f:
 
 class LLMEvaluator:
     """Advanced LLM Evaluation System with Anti-Cheating Detection"""
-    
+
     def __init__(self, weights: Optional[ScoringWeights] = None):
         self.weights = weights or ScoringWeights()
-        self.client = client
+
+        # Initialize OpenAI client
+        if OPENAI_API_KEY and not USE_MOCK_MODE:
+            try:
+                self.client = OpenAI(api_key=OPENAI_API_KEY)
+                logger.info("OpenAI client initialized inside LLMEvaluator")
+            except Exception as e:
+                logger.error(f"Failed to initialize OpenAI client: {e}")
+                self.client = None
+        else:
+            self.client = None
+
+        # Initialize system components
         self.json_validator = EnhancedJSONValidator()
         self.confidence_adjuster = AdvancedConfidenceAdjuster()
         self.plagiarism_detector = AdvancedPlagiarismDetector()

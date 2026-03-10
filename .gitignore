@@ -1,15 +1,22 @@
 # Environment variables
 .env
+.env.*
 
-# Python
+# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Compiled files
 *.so
+*.pyd
+*.pyo
+
+# Python build artifacts
 .Python
 build/
-develop-eggs/
 dist/
+develop-eggs/
 downloads/
 eggs/
 .eggs/
@@ -23,19 +30,19 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environment
+# Virtual environments
 venv/
 ENV/
 env/
 
-# IDE
+# IDE / Editor
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
 
@@ -46,3 +53,15 @@ htmlcov/
 
 # Logs
 *.log
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Mypy
+.mypy_cache/
+
+# Ruff / lint cache
+.ruff_cache/
+
+# Pyre
+.pyre/
